@@ -46,7 +46,10 @@ class Home extends Component {
               <Col md={{size: 4, offset: 4}} sm={{size: 6, offset: 3}} >
                 <Col md={{size: 4, offset: 8}} sm={{size: 6, offset: 6}}><Button onClick={e => {this.props.doLogout();}}>Logout</Button></Col>
                 <Row className="m-2">
-                  <Col>balance: {this.props.account.userInfo.balance} USD</Col>
+                  <Col>User ID: {this.props.account.userInfo.userid}</Col>
+                </Row>
+                <Row className="m-2">
+                  <Col>Balance: {this.props.account.userInfo.balance} USD</Col>
                 </Row>
                 <Row className="m-2">
                   <Col>Expire in: {this.props.account.userInfo.expiration_date}</Col>
