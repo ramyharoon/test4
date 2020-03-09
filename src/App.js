@@ -1,26 +1,48 @@
-import React from 'react';
+import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import { connect } from 'react-redux';
+import { Switch, Redirect, Route } from 'react-router-dom';
+import { ConnectedRouter } from 'connected-react-router';
+import { history } from './reducers';
+import login from './pages/login';
+import { ToastContainer } from 'react-toastify';
+import home from './pages/home';
+import { SagaGetUserInfoAction } from './sagas/apiSaga';
+import { bindActionCreators } from 'redux';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+const mapStateToProps = store => ({
+  account: store.account,
+})
+
+const mapDispatchToProps = dispatch => (
+  bindActionCreators({
+    getUserInfo: SagaGetUserInfoAction,
+  }, dispatch)
+)
+
+class App extends Component {
+
+  componentDidMount() {
+    if ( null !== this.props.account.authToken)
+      this.props.getUserInfo()
+  }
+  
+  
+  render() {
+    return (
+      <>
+        <ConnectedRouter history={history}>
+          <Switch>
+            <Route path='/home' component={home}/>
+            <Route path='/login' component={login}/>
+            <Redirect exact path='/' to={ null === this.props.account.authToken ? '/login' : '/home'} />
+          </Switch>
+        </ConnectedRouter>
+        <ToastContainer/>
+      </>
+    );
+  }  
 }
 
-export default App;
+export default connect(mapStateToProps, mapDispatchToProps)(App);
