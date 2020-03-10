@@ -9,6 +9,7 @@ import { checkUIBlock } from '../services';
 import { API } from '../constants';
 import { Row, Col, Button, FormGroup, Label, Input } from 'reactstrap';
 import { setCustomerTypeAction, setCustomerIdAction } from '../reducers/home';
+import { Redirect } from 'react-router-dom';
 
 const mapStateToProps = store => ({
   account: store.account,
@@ -32,7 +33,8 @@ class Home extends Component {
   }
 
   render() {
-    return (
+    return ( null === this.props.account.authToken ?
+      <Redirect to="/login"/> :
       <ReactCSSTransitionGroup
         component="div"
         transitionName="TabsAnimation"

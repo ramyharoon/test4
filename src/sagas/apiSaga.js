@@ -6,6 +6,7 @@ import { startAPICallAction, finishAPICallAction } from '../reducers/apiCall';
 import HttpStatus from 'http-status-codes';
 import { setAuthTokenAction, setUserInfoAction, clearLoginInfoAction } from '../reducers/account';
 import { history } from '../reducers';
+import { setDataFromUserInfo } from '../reducers/home';
 
 function* callAPI( api, apiCallParams = {}, apiURLParams) {
   yield put(startAPICallAction(api.ID))
@@ -117,6 +118,7 @@ function* getUserInfoEffect(action) {
 
   if (HttpStatus.OK === status) {
     yield put(setUserInfoAction(data))
+    yield put(setDataFromUserInfo(data.type, data.identity))
   }
 }
 
